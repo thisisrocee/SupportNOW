@@ -1,0 +1,81 @@
+<div class="container-fluid h-100">
+  <div class="row h-100">
+    <div class="row mt-1">
+      <div class="col-9 d-flex justify-content-between">
+
+        <div class="btn-group mt-1" role="group" aria-label="Select Model" disabled='discussionId != null'>
+          <div class="btn-group" role="group">
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                Model: SupportNow {{model}}
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <button class="dropdown-item" (click)="model = 'Pro'" [disabled]='discussionId != null'>  Pro</button>
+                <button class="dropdown-item" (click)="model = 'Vision'" [disabled]='discussionId != null'> Vision</button>
+                <button class="dropdown-item" (click)="model = 'Ultimate'" [disabled]="true">Ultimate</button>
+              </div>
+            </div>
+            <a class="btn btn-outline-secondary" data-toggle="list" [routerLink]="['/chat']" role="tab" *ngIf="discussions.length">➕ Create New Chat</a>
+          </div>
+
+        </div>
+
+      </div>
+      <div class="col-3">
+        <button class="btn btn-outline-secondary w-100"></button>
+      </div>
+
+    </div>
+    <!-- Chat Window -->
+    <div class="col-9">
+      <div class="tab-content" id="nav-tabContent">
+        <!-- Chat for a single discussion -->
+        <div class="tab-pane fade show active" id="discussion1" role="tabpanel" aria-labelledby="discussion1-tab">
+          <div class="chat-messages p-4 mb-5"  scroll-to-bottom #scroll>
+            <!-- Messages will be loaded here -->
+            <div *ngFor="let message of messages" class="chat-message">
+              <div class="message ">
+
+                <p><b>You:</b> {{message.prompt}}</p>
+                  <div>
+                    <b>AI</b> : {{message?.status?.state ? message?.status?.state.replace("COMPLETED","") :  'Thinking...' }}
+                        <p *ngIf="message?.status?.state == 'ERROR'" class="small text-muted">{{message?.status?.error}}</p>
+                        @if(message?.status?.state == 'COMPLETED'){
+                          <markdown
+                            mermaid
+                            [data]="message.response"
+                            [disableSanitizer]="false">
+                          </markdown>
+                        }
+                        @else{
+                          <p class="small text">{{message.response}}</p>
+                        }
+                  </div>
+              </div>
+          </div>
+            <div class="chat-input-box input-group ">
+              <button class="btn btn-outline-secondary" type="button" id="button-addon1"  (click)="PostMessage()"  [disabled]="!inputText.value"  (keydown)="$event.key === 'Enter' && PostMessage()">Send</button>
+
+              <textarea type="text" [formControl]="inputText"  class="form-control" placeholder="How can I help you?" [spellcheck]="true" #chatInputItem [rows]="chatInputItem.value.split('\n').length"  [style]="{'height': 'auto', 'overflow-y': 'hidden', 'max-height': '70vh'}"
+
+                     aria-label="Example text with button addon" aria-describedby="button-addon1" [required]="true">
+                </textarea>
+            </div>
+        </div>
+        <!-- More chats for other discussions -->
+      </div>
+    </div>
+     </div>
+
+    <div class="col-3  d-flex flex-column align-items-stretch flex-shrink-0 bg-white" >
+      <div class="list-group list-group-flush border-bottom scrollarea">
+        <a  class="list-group-item list-group-item-action  py-1 lh-tight"  *ngFor="let discussion of discussions; let i = index" [routerLink]="['/chat',discussion.id]"  [routerLinkActive]="['active']"   data-toggle="list" role="tab" aria-controls="discussion1">
+          <div class="d-flex w-100 align-items-center justify-content-between">
+            <small class="m-0 p-0 small"><markdown [data]="discussion.title || 'New Chat'"></markdown></small>
+          </div>
+          <div class=" d-none col-10 mb-1 small text-muted" data-bs-popper="fff" >{{ discussion.prompt }}</div>
+        </a>
+      </div>
+    </div>
+</div>
+</div>

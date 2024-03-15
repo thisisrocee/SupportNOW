@@ -1,0 +1,13 @@
+.chat-messages {
+  height: 80%;
+  overflow-y: auto;
+}
+
+.chat-input-box {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 66.6667%; /* Adjust this value based on the actual width of your discussions list */
+  padding: 10px;
+  background: white;
+}
