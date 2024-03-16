@@ -95,7 +95,7 @@ export const get_available_appointment_time = functions.runWith({
     const { appointment_date } = req.query;
     console.log('appointment_date:', appointment_date);
 
-    const availableTimes = ['9:30', '11:00', '11:30'];
+    const availableTimes = ['9:00', '12:00'];
 
     await updateSession(sessionId, { availableTimes: availableTimes });
     res.status(200).json({ results: availableTimes });
