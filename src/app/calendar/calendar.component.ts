@@ -29,7 +29,7 @@ export class CalendarComponent implements OnInit
     return this.auth.authState.pipe(
       switchMap(user => {
         if (user) {
-          let collection = this.firestore.collection(`user/${user.uid}/appointments`);
+          let collection = this.firestore.collection(`users/${user.uid}/appointments`);
           return collection.valueChanges();
         } else {
           return []; // or throw an error/return an observable error
