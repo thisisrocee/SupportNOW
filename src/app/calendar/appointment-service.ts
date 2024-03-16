@@ -13,7 +13,7 @@ export class AppointmentService {
     return this.auth.authState.pipe(
       switchMap(user => {
         if (user) {
-          let collection = this.firestore.collection(`users/${user.uid}/appointments`);
+          let collection = this.firestore.collection(`users/${user.uid}/appointments`, ref => ref.orderBy("appointment_date","asc"));
           return collection.valueChanges();
         } else {
           return []; 

@@ -18,6 +18,9 @@ export class HomeComponent {
   constructor(private appointmentService: AppointmentService) { }
 
   ngOnInit(): void {
-    this.appointmentService.getLatestDates().subscribe((x: any[]) => this.length = x.length);
+    this.appointmentService.getLatestDates().subscribe((x: any[]) => {
+      this.length = x.length
+      this.latestDates = x
+    });
   }
 }

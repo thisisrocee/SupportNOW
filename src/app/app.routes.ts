@@ -15,7 +15,6 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
     { path: 'register', component: RegisterComponent, canActivate: [AuthGuard] },
     { path: 'user', component: UserComponent, canActivate: [securityInnerGuard] },
-    { path: 'chat',  loadChildren: () => import('./chat/chat.module').then(m => m.ChatModule), canActivate: [securityInnerGuard]},
   {
     path: '**',
     redirectTo: '',

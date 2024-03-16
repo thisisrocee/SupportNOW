@@ -41,7 +41,7 @@ export class RegisterComponent {
   tryFacebookLogin() {
     this.authService.doFacebookLogin()
       .then(res => {
-        this.router.navigate(['/chat']);
+        this.router.navigate(['/home']);
       }, err => console.log(err)
       );
   }
@@ -49,7 +49,7 @@ export class RegisterComponent {
   tryTwitterLogin() {
     this.authService.doTwitterLogin()
       .then(res => {
-        this.router.navigate(['/chat']);
+        this.router.navigate(['/home']);
       }, err => console.log(err)
       );
   }
@@ -57,7 +57,7 @@ export class RegisterComponent {
   tryGoogleLogin() {
     this.authService.doGoogleLogin()
       .then(res => {
-        this.router.navigate(['/chat']);
+        this.router.navigate(['/home']);
       }, err => console.log(err)
       );
   }
