@@ -21,9 +21,8 @@ import { FirestoreOnWriteProcessor } from './firestore-onwrite-processor';
 import { generateChatResponse } from './generate_chat_response';
 import { createErrorMessage } from './errors';
 
-const admin = require('firebase-admin');
+import * as admin from 'firebase-admin';
 admin.initializeApp();
-const store = admin.firestore();
 
 // TODO: needs logging/error logging, and fixing tests
 
@@ -62,7 +61,7 @@ export const suggest_appointment_date = functions.https.onRequest(
       }
       nextDay.setDate(nextDay.getDate() + 1);
     }
-
+    await updateSession(sessionId, { suggestedDates: suggestedDates });
     res.status(200).json({ results: suggestedDates });
   },
 );
@@ -77,7 +76,7 @@ export const select_appointment_date = functions.https.onRequest(
     console.log('appointment_date:', appointment_date);
     // Placeholder logic
     const result = `Appointment date set to ${appointment_date}`;
-
+    await updateSession(sessionId, { appointment_date: appointment_date });
     res.status(200).json({ results: [result] });
   },
 );
@@ -92,6 +91,7 @@ export const get_available_appointment_time = functions.https.onRequest(
 
     const availableTimes = ['9:30', '11:00', '11:30'];
 
+    await updateSession(sessionId, { availableTimes: availableTimes });
     res.status(200).json({ results: availableTimes });
   },
 );
@@ -105,7 +105,64 @@ export const select_appointment_time = functions.https.onRequest(
     console.log('appointment_time:', appointment_time);
     // Placeholder logic
     const result = `Appointment time set to ${appointment_time}`;
-
+    await updateSession(sessionId, { appointment_time: appointment_time });
     res.status(200).json({ results: [result] });
   },
 );
+
+export const get_session_information = functions.https.onRequest(
+  async (req: any, res: any) => {
+    const sessionId = req.query.session_id as string;
+    console.log('Session ID:', sessionId);
+
+    const sessionRef = admin.firestore().collection('sessions').doc(sessionId);
+    const session = await sessionRef.get();
+    const data = session.data();
+    res.status(200).json({ results: [data] });
+  },
+);
+
+export const book_appointment = functions.https.onRequest(
+  async (req: any, res: any) => {
+    const sessionId = req.query.session_id as string;
+    console.log('Session ID:', sessionId);
+
+    const sessionRef = admin.firestore().collection('sessions').doc(sessionId);
+    const session = await sessionRef.get();
+    const data: any = session.data();
+    const { appointment_date, appointment_time, number } = data;
+
+    const userRef = admin
+      .firestore()
+      .collection('users')
+      .where('number', '==', number);
+    const user = await userRef.get();
+    const userId = user.docs[0].id;
+
+    const appointments = admin
+      .firestore()
+      .collection(`users/${userId}/calendar/appointments`)
+      .doc();
+
+    await appointments.set({
+      appointment_date: appointment_date,
+      appointment_time: appointment_time,
+      sessionId: sessionId,
+    });
+    const result = `Appointment booked for ${appointment_date} at ${appointment_time}`;
+    res.status(200).json({ results: [result] });
+  },
+);
+
+const updateSession = async (sessionId: string, obj: any) => {
+  const sessionRef = admin.firestore().collection('sessions').doc(sessionId);
+
+  await sessionRef.set(
+    {
+      sessionId: sessionId,
+      number: '(203) 584-9130',
+      ...obj,
+    },
+    { merge: true },
+  );
+};
