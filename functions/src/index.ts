@@ -59,7 +59,7 @@ export const suggest_appointment_date = functions
     const suggestedDates = [];
     const today = new Date();
     const nextDay = new Date(today);
-    while (suggestedDates.length < 2) {
+    while (suggestedDates.length < 1) {
       if (nextDay.getDay() != 0 && nextDay.getDay() != 6) {
         suggestedDates.push(nextDay.toISOString().split('T')[0]);
       }
@@ -97,10 +97,12 @@ export const get_available_appointment_time = functions
     const { appointment_date } = req.query;
     console.log('appointment_date:', appointment_date);
 
-    const availableTimes = ['9:00', '12:00'];
+    // random 2 times from array
+    const availableTimes = ['08:00', '09:00','10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
+    const randomTimes = availableTimes.sort(() => 0.5 - Math.random()).slice(0, 2);
 
-    await updateSession(sessionId, { availableTimes: availableTimes });
-    res.status(200).json({ results: availableTimes });
+    await updateSession(sessionId, { availableTimes: randomTimes });
+    res.status(200).json({ results: randomTimes });
   });
 
 export const select_appointment_time = functions
