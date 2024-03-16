@@ -13,12 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 require('dotenv').config();
 import * as functions from 'firebase-functions';
 import config from './config';
 import { FirestoreOnWriteProcessor } from './firestore-onwrite-processor';
 import { generateChatResponse } from './generate_chat_response';
 import { createErrorMessage } from './errors';
+
+const admin = require('firebase-admin');
+admin.initializeApp();
+const store = admin.firestore();
+
 // TODO: needs logging/error logging, and fixing tests
 
 //TODO: redact googleAi.apiKey from logs
@@ -40,3 +46,66 @@ export const generateChatMessage = functions.firestore
   .onWrite(async (change) => {
     return processor.run(change);
   });
+
+export const suggest_appointment_date = functions.https.onRequest(
+  async (req: any, res: any) => {
+    const sessionId = req.query.session_id as string;
+
+    console.log('Session ID:', sessionId);
+
+    const suggestedDates = [];
+    const today = new Date();
+    const nextDay = new Date(today);
+    while (suggestedDates.length < 2) {
+      if (nextDay.getDay() != 0 && nextDay.getDay() != 6) {
+        suggestedDates.push(nextDay.toISOString().split('T')[0]);
+      }
+      nextDay.setDate(nextDay.getDate() + 1);
+    }
+
+    res.status(200).json({ results: suggestedDates });
+  },
+);
+
+// Select appointment date
+export const select_appointment_date = functions.https.onRequest(
+  async (req: any, res: any) => {
+    const sessionId = req.query.session_id as string;
+    console.log('Session ID:', sessionId);
+
+    const { appointment_date } = req.body;
+    console.log('appointment_date:', appointment_date);
+    // Placeholder logic
+    const result = `Appointment date set to ${appointment_date}`;
+
+    res.status(200).json({ results: [result] });
+  },
+);
+
+export const get_available_appointment_time = functions.https.onRequest(
+  async (req: any, res: any) => {
+    const sessionId = req.query.session_id as string;
+    console.log('Session ID:', sessionId);
+
+    const { appointment_date } = req.query;
+    console.log('appointment_date:', appointment_date);
+
+    const availableTimes = ['9:30', '11:00', '11:30'];
+
+    res.status(200).json({ results: availableTimes });
+  },
+);
+
+export const select_appointment_time = functions.https.onRequest(
+  async (req: any, res: any) => {
+    const sessionId = req.query.session_id as string;
+    console.log('Session ID:', sessionId);
+
+    const { appointment_time } = req.body;
+    console.log('appointment_time:', appointment_time);
+    // Placeholder logic
+    const result = `Appointment time set to ${appointment_time}`;
+
+    res.status(200).json({ results: [result] });
+  },
+);
