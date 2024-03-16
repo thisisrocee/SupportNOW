@@ -1,11 +1,12 @@
 import {Component, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {JsonPipe} from "@angular/common";
 import { AppointmentService } from '../calendar/appointment-service';
+import { CalendarComponent } from '../calendar/calendar.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [JsonPipe], 
+  imports: [JsonPipe, CalendarComponent], 
   providers: [AppointmentService],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -15,7 +16,7 @@ import { AppointmentService } from '../calendar/appointment-service';
 export class HomeComponent {
   latestDates: any[] | undefined;
   length: number | undefined;
-  constructor(private appointmentService: AppointmentService) { }
+  constructor(private appointmentService: AppointmentService, private calendarComponent: CalendarComponent) { }
 
   ngOnInit(): void {
     this.appointmentService.getLatestDates().subscribe((x: any[]) => {

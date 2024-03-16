@@ -1,8 +1,11 @@
-import {Component, CUSTOM_ELEMENTS_SCHEMA, OnInit} from '@angular/core';
+import {Component, CUSTOM_ELEMENTS_SCHEMA, Injectable, OnInit} from '@angular/core';
 import {CommonModule, NgForOf, NgIf} from '@angular/common';
 import {JsonPipe} from "@angular/common";
 import { AppointmentService } from './appointment-service';
 
+@Injectable({
+  providedIn: 'root'
+})
 @Component({
   selector: 'app-calendar',
   standalone: true,
