@@ -141,7 +141,7 @@ export const book_appointment = functions.https.onRequest(
 
     const appointments = admin
       .firestore()
-      .collection(`users/${userId}/calendar/appointments`)
+      .collection(`users/${userId}/appointments`)
       .doc();
 
     await appointments.set({
