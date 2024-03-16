@@ -46,10 +46,11 @@ export const generateChatMessage = functions.firestore
     return processor.run(change);
   });
 
-export const suggest_appointment_date = functions.runWith({
-  minInstances: 1,
-}).https.onRequest(
-  async (req: any, res: any) => {
+export const suggest_appointment_date = functions
+  .runWith({
+    minInstances: 1,
+  })
+  .https.onRequest(async (req: any, res: any) => {
     const sessionId = req.query.session_id as string;
 
     console.log('Session ID:', sessionId);
@@ -57,7 +58,7 @@ export const suggest_appointment_date = functions.runWith({
     const suggestedDates = [];
     const today = new Date();
     const nextDay = new Date(today);
-    while (suggestedDates.length < 2) {
+    while (suggestedDates.length < 1) {
       if (nextDay.getDay() != 0 && nextDay.getDay() != 6) {
         suggestedDates.push(nextDay.toISOString().split('T')[0]);
       }
@@ -65,14 +66,14 @@ export const suggest_appointment_date = functions.runWith({
     }
     await updateSession(sessionId, { suggestedDates: suggestedDates });
     res.status(200).json({ results: suggestedDates });
-  },
-);
+  });
 
 // Select appointment date
-export const select_appointment_date = functions.runWith({
-  minInstances: 1
-}).https.onRequest(
-  async (req: any, res: any) => {
+export const select_appointment_date = functions
+  .runWith({
+    minInstances: 1,
+  })
+  .https.onRequest(async (req: any, res: any) => {
     const sessionId = req.query.session_id as string;
     console.log('Session ID:', sessionId);
 
@@ -82,30 +83,32 @@ export const select_appointment_date = functions.runWith({
     const result = `Appointment date set to ${appointment_date}`;
     await updateSession(sessionId, { appointment_date: appointment_date });
     res.status(200).json({ results: [result] });
-  },
-);
+  });
 
-export const get_available_appointment_time = functions.runWith({
-  minInstances: 1
-}).https.onRequest(
-  async (req: any, res: any) => {
+export const get_available_appointment_time = functions
+  .runWith({
+    minInstances: 1,
+  })
+  .https.onRequest(async (req: any, res: any) => {
     const sessionId = req.query.session_id as string;
     console.log('Session ID:', sessionId);
 
     const { appointment_date } = req.query;
     console.log('appointment_date:', appointment_date);
 
-    const availableTimes = ['9:00', '12:00'];
+    // random 2 times from array
+    const availableTimes = ['08:00', '09:00','10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
+    const randomTimes = availableTimes.sort(() => 0.5 - Math.random()).slice(0, 2);
 
-    await updateSession(sessionId, { availableTimes: availableTimes });
-    res.status(200).json({ results: availableTimes });
-  },
-);
+    await updateSession(sessionId, { availableTimes: randomTimes });
+    res.status(200).json({ results: randomTimes });
+  });
 
-export const select_appointment_time = functions.runWith({
-  minInstances: 1
-}).https.onRequest(
-  async (req: any, res: any) => {
+export const select_appointment_time = functions
+  .runWith({
+    minInstances: 1,
+  })
+  .https.onRequest(async (req: any, res: any) => {
     const sessionId = req.query.session_id as string;
     console.log('Session ID:', sessionId);
 
@@ -115,13 +118,13 @@ export const select_appointment_time = functions.runWith({
     const result = `Appointment time set to ${appointment_time}`;
     await updateSession(sessionId, { appointment_time: appointment_time });
     res.status(200).json({ results: [result] });
-  },
-);
+  });
 
-export const get_session_information = functions.runWith({
-  minInstances: 1
-}).https.onRequest(
-  async (req: any, res: any) => {
+export const get_session_information = functions
+  .runWith({
+    minInstances: 1,
+  })
+  .https.onRequest(async (req: any, res: any) => {
     const sessionId = req.query.session_id as string;
     console.log('Session ID:', sessionId);
 
@@ -129,13 +132,13 @@ export const get_session_information = functions.runWith({
     const session = await sessionRef.get();
     const data = session.data();
     res.status(200).json({ results: [data] });
-  },
-);
+  });
 
-export const book_appointment = functions.runWith({
-  minInstances: 1
-}).https.onRequest(
-  async (req: any, res: any) => {
+export const book_appointment = functions
+  .runWith({
+    minInstances: 1,
+  })
+  .https.onRequest(async (req: any, res: any) => {
     const sessionId = req.query.session_id as string;
     console.log('Session ID:', sessionId);
 
@@ -163,8 +166,7 @@ export const book_appointment = functions.runWith({
     });
     const result = `Appointment booked for ${appointment_date} at ${appointment_time}`;
     res.status(200).json({ results: [result] });
-  },
-);
+  });
 
 const updateSession = async (sessionId: string, obj: any) => {
   const sessionRef = admin.firestore().collection('sessions').doc(sessionId);
