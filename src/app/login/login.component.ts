@@ -40,21 +40,21 @@ export class LoginComponent {
   tryFacebookLogin() {
     this.authService.doFacebookLogin()
       .then(res => {
-        this.router.navigate(['/chat']);
+        this.router.navigate(['/home']);
       })
   }
 
   tryTwitterLogin() {
     this.authService.doTwitterLogin()
       .then(res => {
-        this.router.navigate(['/chat']);
+        this.router.navigate(['/home']);
       })
   }
 
   tryGoogleLogin() {
     this.authService.doGoogleLogin()
       .then(res => {
-        this.router.navigate(['/chat']);
+        this.router.navigate(['/home']);
       })
   }
 
@@ -64,7 +64,7 @@ export class LoginComponent {
     this.authService.doLogin(this.f['email'].value, this.f['password'].value)
       .then(res => {
         console.log(res);
-        this.router.navigate(['/chat']);
+        this.router.navigate(['/home']);
       }, err => {
         console.log(err);
         this.errorMessage = err.message;

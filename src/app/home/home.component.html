@@ -1,22 +1,41 @@
-
-
+<header class="py-2">
+  <div class="text-center fs-1 fw-bold">Dashboard</div>
+  <div class="container px-5 pb-5">
+      <div class="row gx-5 align-items-center">
+          <div class="col-xxl-5">
+              <div class="text-center text-xxl-start">
+                  <div class="fs-3 fw-light text-muted">Appointments so far:</div>
+                  <h1 class="display-3 fw-bolder mb-5"><span class="text-gradient d-inline">{{length}}</span></h1>
+                  <!-- <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xxl-start mb-3">
+                      <a class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" href="resume.html">Resume</a>
+                      <a class="btn btn-outline-dark btn-lg px-5 py-3 fs-6 fw-bolder" href="projects.html">Projects</a>
+                  </div> -->
+              </div>
+          </div>
+          <!-- <div class="col-xxl-7">
+              <div class="d-flex justify-content-center mt-5 mt-xxl-0">
+                  <div class="profile bg-gradient-primary-to-secondary">
+                  </div>
+              </div>
+          </div> -->
+      </div>
+  </div>
+</header>
 
 <df-messenger
   project-id="support-now-417017"
   agent-id="1549e96f-1af8-4209-bdd8-9729b0a95f01"
   language-code="en"
   max-query-length="-1">
-  <df-messenger-chat
-    chat-title="Book Dental Appointment">
-  </df-messenger-chat>
+  <df-messenger-chat-bubble
+   chat-title="Book Dentist">
+  </df-messenger-chat-bubble>
 </df-messenger>
 <style>
   df-messenger {
     z-index: 999;
-    /* position: absolute; */
-    bottom: 0;
-    right: 0;
-    top: 0;
-    width: 350px;
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
   }
 </style>
