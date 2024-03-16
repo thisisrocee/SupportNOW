@@ -46,7 +46,9 @@ export const generateChatMessage = functions.firestore
     return processor.run(change);
   });
 
-export const suggest_appointment_date = functions.https.onRequest(
+export const suggest_appointment_date = functions.runWith({
+  minInstances: 1,
+}).https.onRequest(
   async (req: any, res: any) => {
     const sessionId = req.query.session_id as string;
 
@@ -67,7 +69,9 @@ export const suggest_appointment_date = functions.https.onRequest(
 );
 
 // Select appointment date
-export const select_appointment_date = functions.https.onRequest(
+export const select_appointment_date = functions.runWith({
+  minInstances: 1
+}).https.onRequest(
   async (req: any, res: any) => {
     const sessionId = req.query.session_id as string;
     console.log('Session ID:', sessionId);
@@ -81,7 +85,9 @@ export const select_appointment_date = functions.https.onRequest(
   },
 );
 
-export const get_available_appointment_time = functions.https.onRequest(
+export const get_available_appointment_time = functions.runWith({
+  minInstances: 1
+}).https.onRequest(
   async (req: any, res: any) => {
     const sessionId = req.query.session_id as string;
     console.log('Session ID:', sessionId);
@@ -96,7 +102,9 @@ export const get_available_appointment_time = functions.https.onRequest(
   },
 );
 
-export const select_appointment_time = functions.https.onRequest(
+export const select_appointment_time = functions.runWith({
+  minInstances: 1
+}).https.onRequest(
   async (req: any, res: any) => {
     const sessionId = req.query.session_id as string;
     console.log('Session ID:', sessionId);
@@ -110,7 +118,9 @@ export const select_appointment_time = functions.https.onRequest(
   },
 );
 
-export const get_session_information = functions.https.onRequest(
+export const get_session_information = functions.runWith({
+  minInstances: 1
+}).https.onRequest(
   async (req: any, res: any) => {
     const sessionId = req.query.session_id as string;
     console.log('Session ID:', sessionId);
@@ -122,7 +132,9 @@ export const get_session_information = functions.https.onRequest(
   },
 );
 
-export const book_appointment = functions.https.onRequest(
+export const book_appointment = functions.runWith({
+  minInstances: 1
+}).https.onRequest(
   async (req: any, res: any) => {
     const sessionId = req.query.session_id as string;
     console.log('Session ID:', sessionId);
