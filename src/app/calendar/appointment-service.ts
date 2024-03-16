@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore, QueryFn } from '@angular/fire/compat/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, switchMap } from 'rxjs';
 
 @Injectable()
