@@ -150,6 +150,8 @@ export const book_appointment = functions.https.onRequest(
       sessionId: sessionId,
     });
     const result = `Appointment booked for ${appointment_date} at ${appointment_time}`;
+    await updateSession(sessionId, { userId: userId, status: 'booked' });
+
     res.status(200).json({ results: [result] });
   },
 );
