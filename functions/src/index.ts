@@ -20,6 +20,7 @@ import config from './config';
 import { FirestoreOnWriteProcessor } from './firestore-onwrite-processor';
 import { generateChatResponse } from './generate_chat_response';
 import { createErrorMessage } from './errors';
+import { faker } from '@faker-js/faker';
 
 import * as admin from 'firebase-admin';
 admin.initializeApp();
@@ -46,10 +47,11 @@ export const generateChatMessage = functions.firestore
     return processor.run(change);
   });
 
-export const suggest_appointment_date = functions.runWith({
-  minInstances: 1,
-}).https.onRequest(
-  async (req: any, res: any) => {
+export const suggest_appointment_date = functions
+  .runWith({
+    minInstances: 1,
+  })
+  .https.onRequest(async (req: any, res: any) => {
     const sessionId = req.query.session_id as string;
 
     console.log('Session ID:', sessionId);
@@ -65,14 +67,14 @@ export const suggest_appointment_date = functions.runWith({
     }
     await updateSession(sessionId, { suggestedDates: suggestedDates });
     res.status(200).json({ results: suggestedDates });
-  },
-);
+  });
 
 // Select appointment date
-export const select_appointment_date = functions.runWith({
-  minInstances: 1
-}).https.onRequest(
-  async (req: any, res: any) => {
+export const select_appointment_date = functions
+  .runWith({
+    minInstances: 1,
+  })
+  .https.onRequest(async (req: any, res: any) => {
     const sessionId = req.query.session_id as string;
     console.log('Session ID:', sessionId);
 
@@ -82,13 +84,13 @@ export const select_appointment_date = functions.runWith({
     const result = `Appointment date set to ${appointment_date}`;
     await updateSession(sessionId, { appointment_date: appointment_date });
     res.status(200).json({ results: [result] });
-  },
-);
+  });
 
-export const get_available_appointment_time = functions.runWith({
-  minInstances: 1
-}).https.onRequest(
-  async (req: any, res: any) => {
+export const get_available_appointment_time = functions
+  .runWith({
+    minInstances: 1,
+  })
+  .https.onRequest(async (req: any, res: any) => {
     const sessionId = req.query.session_id as string;
     console.log('Session ID:', sessionId);
 
@@ -99,13 +101,13 @@ export const get_available_appointment_time = functions.runWith({
 
     await updateSession(sessionId, { availableTimes: availableTimes });
     res.status(200).json({ results: availableTimes });
-  },
-);
+  });
 
-export const select_appointment_time = functions.runWith({
-  minInstances: 1
-}).https.onRequest(
-  async (req: any, res: any) => {
+export const select_appointment_time = functions
+  .runWith({
+    minInstances: 1,
+  })
+  .https.onRequest(async (req: any, res: any) => {
     const sessionId = req.query.session_id as string;
     console.log('Session ID:', sessionId);
 
@@ -115,13 +117,13 @@ export const select_appointment_time = functions.runWith({
     const result = `Appointment time set to ${appointment_time}`;
     await updateSession(sessionId, { appointment_time: appointment_time });
     res.status(200).json({ results: [result] });
-  },
-);
+  });
 
-export const get_session_information = functions.runWith({
-  minInstances: 1
-}).https.onRequest(
-  async (req: any, res: any) => {
+export const get_session_information = functions
+  .runWith({
+    minInstances: 1,
+  })
+  .https.onRequest(async (req: any, res: any) => {
     const sessionId = req.query.session_id as string;
     console.log('Session ID:', sessionId);
 
@@ -129,13 +131,13 @@ export const get_session_information = functions.runWith({
     const session = await sessionRef.get();
     const data = session.data();
     res.status(200).json({ results: [data] });
-  },
-);
+  });
 
-export const book_appointment = functions.runWith({
-  minInstances: 1
-}).https.onRequest(
-  async (req: any, res: any) => {
+export const book_appointment = functions
+  .runWith({
+    minInstances: 1,
+  })
+  .https.onRequest(async (req: any, res: any) => {
     const sessionId = req.query.session_id as string;
     console.log('Session ID:', sessionId);
 
@@ -160,12 +162,20 @@ export const book_appointment = functions.runWith({
       appointment_date: appointment_date,
       appointment_time: appointment_time,
       sessionId: sessionId,
+      user: createRandomUser(),
     });
     const result = `Appointment booked for ${appointment_date} at ${appointment_time}`;
     res.status(200).json({ results: [result] });
-  },
-);
-
+  });
+export function createRandomUser(): any {
+  return {
+    userId: faker.string.uuid(),
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    phone: faker.phone.number(),
+    avatar: faker.image.avatar(),
+  };
+}
 const updateSession = async (sessionId: string, obj: any) => {
   const sessionRef = admin.firestore().collection('sessions').doc(sessionId);
 
