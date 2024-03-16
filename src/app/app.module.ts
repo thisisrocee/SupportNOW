@@ -30,6 +30,6 @@ import {ChatModule} from "./chat/chat.module";
     ChatModule
   ],
   providers: [AuthService, UserService, UserResolver, AuthGuard],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

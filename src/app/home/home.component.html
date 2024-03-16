@@ -1,15 +1,22 @@
-<header class="hero-background">
-  <video playsinline autoplay muted loop  id="heroVideo"  oncanplay="this.play()" onloadedmetadata="this.muted = true">
-    <source src="assets/video/production_id_4779866.mp4" type="video/mp4">
-  </video>
-  <div class="container h-100">
-    <div class="row h-100 align-items-center">
-      <div class="col-lg-12 text-center">
-        <h1 class="display-4 mt-5 mb-2 "> Customer support</h1>
-        <p class="lead mb-5 text-white-50">Empowering your business with cutting-edge AI Customer support.</p>
-        <a [href]="'/register'" class="btn btn-primary btn-lg animated-cta">Discover How</a>
-      </div>
-    </div>
-  </div>
-</header>
 
+
+
+<df-messenger
+  project-id="support-now-417017"
+  agent-id="1549e96f-1af8-4209-bdd8-9729b0a95f01"
+  language-code="en"
+  max-query-length="-1">
+  <df-messenger-chat
+    chat-title="Book Dental Appointment">
+  </df-messenger-chat>
+</df-messenger>
+<style>
+  df-messenger {
+    z-index: 999;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    top: 0;
+    width: 350px;
+  }
+</style>
