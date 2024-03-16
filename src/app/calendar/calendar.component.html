@@ -1,1 +1,29 @@
-{{latestDates | json}}
+
+<div class="container mt-3">
+  <table class="table table-bordered table-striped rounded-3">
+    <thead>
+    <tr>
+      <th>Time</th>
+      <th>Mon 3/18</th>
+      <th>Tue 3/19</th>
+      <th>Wed 3/20</th>
+      <th>Thu 3/21</th>
+      <th>Fri 3/22</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let time of timeSlots">
+      <td><b>{{ time }}</b></td>
+      <td *ngFor="let day of days">
+
+        <div *ngFor="let date of latestDates">
+          <div *ngIf="date.appointment_date + ' ' + date.appointment_time === day + ' ' + time">
+            <span class="badge rounded-pill bg-primary">Booked</span>
+          </div>
+        </div>
+
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
