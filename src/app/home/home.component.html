@@ -71,7 +71,7 @@
     <div class="col-12 col-md-8 mb-4">
       <div class="card shadow">
         <div class="card-header border-0 text-center">
-          <h3 class="mb-0">Appointments Calendar</h3>
+          <h3 class="fw-bold">Calendar</h3>
         </div>
       <app-calendar></app-calendar>
       </div>
@@ -79,7 +79,7 @@
     <div class="col-12 col-md-4">
       <div class="card shadow">
         <div class="card-header border-0 text-center">
-          <h3 class="mb-0">Upcoming appointments</h3>
+          <h3 class="fw-bold">Upcoming</h3>
         </div>
         <div class="table-responsive p-3 ">
           <table class="table align-items-center table-flush">
@@ -93,7 +93,7 @@
             </thead>
             <tbody>
 
-            @for (latestDate of latestDates?.slice(0, 10); track latestDate.name; let i = $index) {
+            @for (latestDate of latestDates?.slice(0, 6); track latestDate.name; let i = $index) {
             <tr>
               <th scope="row">
                 <div class="media align-items-center">

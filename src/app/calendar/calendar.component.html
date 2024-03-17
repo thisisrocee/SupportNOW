@@ -19,7 +19,7 @@
         <div *ngFor="let date of latestDates">
           <div *ngIf="date.appointment_date + ' ' + date.appointment_time === day + ' ' + time">
             <span class="badge rounded-pill bg-primary">
-                Booked for {{date.user?.firstName}} {{date.user?.lastName}}
+                {{date.user?.firstName}} {{date.user?.lastName}}
             </span>
           </div>
         </div>
