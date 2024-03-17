@@ -14,14 +14,5 @@ import { CalendarComponent } from '../calendar/calendar.component';
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomeComponent {
-  latestDates: any[] | undefined;
-  length: number | undefined;
-  constructor(private appointmentService: AppointmentService, private calendarComponent: CalendarComponent) { }
 
-  ngOnInit(): void {
-    this.appointmentService.getLatestDates().subscribe((x: any[]) => {
-      this.length = x.length
-      this.latestDates = x
-    });
-  }
 }

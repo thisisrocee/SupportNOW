@@ -1,0 +1,140 @@
+<header class="py-2 container">
+    <div class="text-center fs-1 fw-bold mb-5">Dashboard</div>
+  
+    <div class="row mb-4">
+      <div class="col-6 col-md-3 mr-2">
+        <div class="card card-stats mb-4 mb-lg-0">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Service endpoint</h5>
+                <span class="h3 font-weight-bold mb-0">+1 203 584 9130</span>
+              </div>
+            </div>
+            <p class="mt-3 mb-0 text-muted text-sm">
+              <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> Healthy</span>
+              <span class="text-nowrap"> &nbsp;</span>
+            </p>
+          </div>
+        </div>
+       </div>
+      <div class="col-6 col-md-3 mr-2">
+        <div class="card card-stats mb-4 mb-lg-0">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Completed</h5>
+                <span class="h3 font-weight-bold mb-0">{{length}} &nbsp;</span>
+              </div>
+            </div>
+            <p class="mt-3 mb-0 text-muted text-sm">
+              <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
+              <span class="text-nowrap"> Since last month</span>
+            </p>
+          </div>
+      </div>
+      </div>
+      <div class="col-6 col-md-3 mr-2">
+        <div class="card card-stats mb-4 mb-lg-0">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Cancelations</h5>
+                <span class="h3 font-weight-bold mb-0">15</span>
+              </div>
+            </div>
+            <p class="mt-3 mb-0 text-muted text-sm">
+              <span class="text-danger mr-2"><i class="fa fa-arrow-up"></i> - 30.48%</span>
+              <span class="text-nowrap"> Since last month</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3 mr-2">
+        <div class="card card-stats mb-4 mb-lg-0">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Edits</h5>
+                <span class="h3 font-weight-bold mb-0">4</span>
+              </div>
+            </div>
+            <p class="mt-3 mb-0 text-muted text-sm">
+              <span class="text-danger mr-2"><i class="fa fa-arrow-up"></i> - 15.48%</span>
+              <span class="text-nowrap"> Since last month</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row ">
+      <div class="col-12 col-md-8 mb-4">
+        <div class="card shadow">
+          <div class="card-header border-0 text-center">
+            <h3 class="fw-bold">Calendar</h3>
+          </div>
+        <app-calendar></app-calendar>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="card shadow">
+          <div class="card-header border-0 text-center">
+            <h3 class="fw-bold">Upcoming</h3>
+          </div>
+          <div class="table-responsive p-3 ">
+            <table class="table align-items-center table-flush">
+              <thead class="thead-light">
+              <tr>
+                <th scope="col">Picture</th>
+                <th scope="col">Full Name</th>
+                <th scope="col">Time</th>
+                <th scope="col">Date</th>
+              </tr>
+              </thead>
+              <tbody>
+  
+              @for (latestDate of latestDates?.slice(0, 6); track latestDate.name; let i = $index) {
+              <tr>
+                <th scope="row">
+                  <div class="media align-items-center">
+                    <div class="media-body">
+                      <img src='{{ latestDate.user.avatar }}' width="30" height="30">
+                          </div>
+                        </div>
+                      </th>
+                      <td>
+              {{ latestDate.user.firstName }} {{ latestDate.user.lastName }}
+              </td>
+              <td>
+              {{ latestDate.appointment_time }}
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <span class="mr-2">{{ latestDate.appointment_date }}</span>
+                        </div>
+                      </td>
+                    </tr>
+              }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </header>
+  
+  <df-messenger project-id="support-now-417017" agent-id="1549e96f-1af8-4209-bdd8-9729b0a95f01" language-code="en"
+    max-query-length="-1">
+    <df-messenger-chat-bubble chat-title="Book Dentist">
+    </df-messenger-chat-bubble>
+  </df-messenger>
+  <style>
+    df-messenger {
+      z-index: 999;
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+    }
+  </style>
+  
