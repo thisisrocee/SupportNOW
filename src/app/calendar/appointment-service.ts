@@ -21,4 +21,18 @@ export class AppointmentService {
       })
     );
   }
+
+  getAppointmentsOnDate(date : string): Observable<any[]> {
+    return this.auth.authState.pipe(
+      switchMap(user => {
+        if (user) {
+          let collection = this.firestore.collection(`users/${user.uid}/appointments`, 
+          ref => ref.where('appointment_date', '==', date));
+          return collection.valueChanges();
+        } else {
+          return []; 
+        }
+      })
+    );
+  }
 }
